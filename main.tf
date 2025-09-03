@@ -123,3 +123,71 @@ module "nginx_sg" {
   egress_rules  = var.nginx_sg.egress_rules
   tags          = var.sg_tags
 }
+
+module "ecs_cluster" {
+  source       = "./modules/cluster"
+  aws_region   = var.aws_region
+  cluster_name = var.cluster_name
+  
+}
+
+# ECS Services (reuse old TDs and SGs)
+module "frontend_service" {
+  source             = "./modules/service"
+  service_name       = "frontend-service"
+  task_definition_arn= module.frontend_task_definition.task_definition_arn
+  cluster_id         = module.ecs_cluster.cluster_id
+  subnet_ids         = var.public_subnet_cidrs
+  sg_ids             = [module.frontend_sg.sg_id]
+  desired_count      = 2
+  assign_public_ip   = true
+  tags               = var.tags
+}
+
+module "backend_service" {
+  source             = "./modules/service"
+  service_name       = "backend-service"
+  task_definition_arn= module.backend_task_definition.task_definition_arn
+  cluster_id         = module.ecs_cluster.cluster_id
+  subnet_ids         = var.private_subnet_cidrs
+  sg_ids             = [module.backend_sg.sg_id]
+  desired_count      = 2
+  assign_public_ip   = false
+  tags               = var.tags
+}
+
+module "redis_service" {
+  source             = "./modules/service"
+  service_name       = "redis-service"
+  task_definition_arn= module.redis_task_definition.task_definition_arn
+  cluster_id         = module.ecs_cluster.cluster_id
+  subnet_ids         = var.private_subnet_cidrs
+  sg_ids             = [module.redis_sg.sg_id]
+  desired_count      = 1
+  assign_public_ip   = false
+  tags               = var.tags
+}
+
+module "postgres_service" {
+  source             = "./modules/service"
+  service_name       = "postgres-service"
+  task_definition_arn= module.postgres_task_definition.task_definition_arn
+  cluster_id         = module.ecs_cluster.cluster_id
+  subnet_ids         = var.private_subnet_cidrs
+  sg_ids             = [module.postgres_sg.sg_id]
+  desired_count      = 1
+  assign_public_ip   = false
+  tags               = var.tags
+}
+
+module "nginx_service" {
+  source             = "./modules/service"
+  service_name       = "nginx-service"
+  task_definition_arn= module.nginx_task_definition.task_definition_arn
+  cluster_id         = module.ecs_cluster.cluster_id
+  subnet_ids         = var.public_subnet_cidrs
+  sg_ids             = [module.nginx_sg.sg_id]
+  desired_count      = 2
+  assign_public_ip   = true
+  tags               = var.tags
+}

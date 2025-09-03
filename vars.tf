@@ -81,3 +81,30 @@ variable "backend_sg" { type = any }
 variable "postgres_sg" { type = any }
 variable "redis_sg" { type = any }
 variable "nginx_sg" { type = any }
+
+##cluster
+variable "cluster_name" {
+  type        = string
+  description = "Name of the ECS cluster"
+}
+
+##sevide for cluster
+# variable "vpc_id"               { type = string }
+# variable "public_subnet_cidrs"  { type = list(string) }
+# variable "private_subnet_cidrs" { type = list(string) }
+
+# variable "frontend_sg"  { type = any }
+# variable "backend_sg"   { type = any }
+# variable "redis_sg"     { type = any }
+# variable "postgres_sg"  { type = any }
+# variable "nginx_sg"     { type = any }
+
+variable "frontend_task_definition" { type = any }
+variable "backend_task_definition"  { type = any }
+variable "redis_task_definition"    { type = any }
+variable "postgres_task_definition" { type = any }
+variable "nginx_task_definition"    { type = any }
+
+# variable "tags" { type = map(string) }
+
+

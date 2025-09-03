@@ -1,21 +1,39 @@
-# Cluster
-variable "ecs_cluster_name" { type = string }
-variable "tags"             { type = map(string) }
+variable "service_name" {
+  type        = string
+  description = "ECS service name"
+}
 
-# Subnets
-variable "public_subnet_ids"  { type = list(string) }
-variable "private_subnet_ids" { type = list(string) }
+variable "task_definition_arn" {
+  type        = string
+  description = "Task Definition ARN to use for ECS service"
+}
 
-# Security Groups (from previous modules)
-variable "frontend_sg_id" { type = string }
-variable "backend_sg_id"  { type = string }
-variable "redis_sg_id"    { type = string }
-variable "postgres_sg_id" { type = string }
-variable "nginx_sg_id"    { type = string }
+variable "cluster_id" {
+  type        = string
+  description = "ECS cluster ID"
+}
 
-# Task definitions (from previous modules)
-variable "frontend_task_definition_arn" { type = string }
-variable "backend_task_definition_arn"  { type = string }
-variable "redis_task_definition_arn"    { type = string }
-variable "postgres_task_definition_arn" { type = string }
-variable "nginx_task_definition_arn"    { type = string }
+variable "subnet_ids" {
+  type        = list(string)
+  description = "Subnet IDs for ECS service"
+}
+
+variable "sg_ids" {
+  type        = list(string)
+  description = "Security Group IDs for ECS service"
+}
+
+variable "desired_count" {
+  type        = number
+  description = "Desired number of tasks"
+}
+
+variable "assign_public_ip" {
+  type        = bool
+  description = "Whether to assign public IP"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags for ECS service"
+}
