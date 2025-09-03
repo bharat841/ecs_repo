@@ -136,7 +136,7 @@ module "frontend_service" {
   source             = "./modules/service"
   service_name       = "frontend-service"
   task_definition_arn= module.frontend_task_definition.task_definition_arn
-  cluster_id         = module.ecs_cluster.cluster_id
+  cluster_id         = module.ecs_cluster.ecs_cluster_id
   subnet_ids         = var.public_subnet_cidrs
   sg_ids             = [module.frontend_sg.sg_id]
   desired_count      = 2
@@ -148,7 +148,7 @@ module "backend_service" {
   source             = "./modules/service"
   service_name       = "backend-service"
   task_definition_arn= module.backend_task_definition.task_definition_arn
-  cluster_id         = module.ecs_cluster.cluster_id
+  cluster_id         = module.ecs_cluster.ecs_cluster_id
   subnet_ids         = var.private_subnet_cidrs
   sg_ids             = [module.backend_sg.sg_id]
   desired_count      = 2
@@ -160,7 +160,7 @@ module "redis_service" {
   source             = "./modules/service"
   service_name       = "redis-service"
   task_definition_arn= module.redis_task_definition.task_definition_arn
-  cluster_id         = module.ecs_cluster.cluster_id
+  cluster_id         = module.ecs_cluster.ecs_cluster_id
   subnet_ids         = var.private_subnet_cidrs
   sg_ids             = [module.redis_sg.sg_id]
   desired_count      = 1
@@ -172,7 +172,7 @@ module "postgres_service" {
   source             = "./modules/service"
   service_name       = "postgres-service"
   task_definition_arn= module.postgres_task_definition.task_definition_arn
-  cluster_id         = module.ecs_cluster.cluster_id
+  cluster_id         = module.ecs_cluster.ecs_cluster_id
   subnet_ids         = var.private_subnet_cidrs
   sg_ids             = [module.postgres_sg.sg_id]
   desired_count      = 1
@@ -184,7 +184,7 @@ module "nginx_service" {
   source             = "./modules/service"
   service_name       = "nginx-service"
   task_definition_arn= module.nginx_task_definition.task_definition_arn
-  cluster_id         = module.ecs_cluster.cluster_id
+  cluster_id         = module.ecs_cluster.ecs_cluster_id
   subnet_ids         = var.public_subnet_cidrs
   sg_ids             = [module.nginx_sg.sg_id]
   desired_count      = 2
